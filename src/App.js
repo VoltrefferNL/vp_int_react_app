@@ -10,8 +10,8 @@ class App extends React.Component {
   };
 
   async componentDidMount() {
-    const worstTenAirQuality = await getWorstAirQuality("GB");
-    const bestTenAirQuality = await getBestAirQuality("GB");
+    const worstTenAirQuality = await api.getWorstAirQuality("GB");
+    const bestTenAirQuality = await api.getBestAirQuality("GB");
 
     this.setState({ worstTenAirQuality, bestTenAirQuality });
   }
