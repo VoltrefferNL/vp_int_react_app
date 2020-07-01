@@ -11,17 +11,25 @@ const CountryPicker = ({ processCountryChange, currentCountry }) => {
 
     fetchCountries();
   }, []);
+
   const countryNameForTitle = countries.find(
     ({ code }) => code === currentCountry
   );
+
   if (!countries && !countryNameForTitle) return <div>Loading...</div>;
   else
     return (
       <div>
         {/* <h1>{countryNameForTitle.name}</h1> */}
-
         <label htmlFor="browser">Choose your browser from the list:</label>
-        <input list="browsers" name="browser" id="browser" />
+        <input
+          list="browsers"
+          name="browser"
+          id="countrysearch"
+          onChange={(e) => {
+            processCountryChange(e.target.value);
+          }}
+        />
         <datalist id="browsers" size="10">
           {countries.map(({ name, code }, i) => {
             return (
@@ -31,20 +39,8 @@ const CountryPicker = ({ processCountryChange, currentCountry }) => {
             );
           })}
         </datalist>
-        <input
-          type="submit"
-          onClick={(e) => {
-            console.log(e);
-            processCountryChange(e.target.value);
-          }}
-        />
       </div>
     );
 };
-
-//   return <div>
-
-//   </div>;
-// };
 
 export default CountryPicker;
