@@ -1,23 +1,26 @@
 import axios from "axios";
 const apiUrl = "https://api.openaq.org/v1/";
 
-export const getWorstAirQuality = (countryCode) => {
-  return axios
-    .get(
+export const getWorstAirQuality = async (countryCode) => {
+  try {
+    const { data } = await axios.get(
       `${apiUrl}measurements?country=${countryCode}&limit=10&order_by=value&sort=desc`
-    )
-    .then(({ data }) => {
-      console.log(data);
-      return data;
-    });
+    );
+    console.log(data, "ASYNC CALL");
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
-export const getBestAirQuality = (countryCode) => {
-  return axios
-    .get(
+export const getBestAirQuality = async (countryCode) => {
+  try {
+    const { data } = await axios.get(
       `${apiUrl}measurements?country=${countryCode}&limit=10&order_by=value&sort=asc`
-    )
-    .then(({ data }) => {
-      return data;
-    });
+    );
+
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
