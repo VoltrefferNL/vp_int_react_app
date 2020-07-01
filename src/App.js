@@ -1,7 +1,8 @@
 import React from "react";
-import "./App.css";
 
+import "./App.css";
 import * as api from "./api";
+import { Header } from "./components";
 
 class App extends React.Component {
   state = {
@@ -17,7 +18,11 @@ class App extends React.Component {
   }
 
   render() {
-    return <div className="App"></div>;
+    return (
+      <div className="App">
+        <Header />
+      </div>
+    );
   }
 }
 
