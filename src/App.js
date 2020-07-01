@@ -2,8 +2,7 @@ import React from "react";
 
 import "./App.css";
 import * as api from "./api";
-import { Header, Table } from "./components";
-import CountryPicker from "./components/CountryPicker/CountryPicker";
+import { Header, Table, CountryPicker } from "./components";
 
 class App extends React.Component {
   state = {
@@ -40,7 +39,6 @@ class App extends React.Component {
       bestTenCitiesAirQuality,
       currentCountry,
     } = this.state;
-    console.log(this.state);
     return (
       <div className="App">
         <Header />
