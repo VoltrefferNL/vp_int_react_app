@@ -1,26 +1,62 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import "./App.css";
+import * as api from "./api";
+import { Header, Table, CountryPicker } from "./components";
+
+class App extends React.Component {
+  state = {
+    bestTenCitiesAirQuality: [],
+    worstTenCitiesAirQuality: [],
+    currentCountry: "GB",
+  };
+
+  async componentDidMount() {
+    const worstTenCitiesAirQuality = await api.getWorstAirQuality("GB");
+    const bestTenCitiesAirQuality = await api.getBestAirQuality("GB");
+
+    this.setState({ worstTenCitiesAirQuality, bestTenCitiesAirQuality });
+  }
+
+  processCountryChange = async (countryCode) => {
+    const worstTenCitiesAirQuality = await api.getWorstAirQuality(
+      `${countryCode}`
+    );
+    const bestTenCitiesAirQuality = await api.getBestAirQuality(
+      `${countryCode}`
+    );
+
+    this.setState({
+      worstTenCitiesAirQuality,
+      bestTenCitiesAirQuality,
+      currentCountry: countryCode,
+    });
+  };
+
+  render() {
+    const {
+      worstTenCitiesAirQuality,
+      bestTenCitiesAirQuality,
+      currentCountry,
+    } = this.state;
+    return (
+      <div className="App">
+        <Header />
+        <CountryPicker
+          processCountryChange={this.processCountryChange}
+          currentCountry={currentCountry}
+        />
+        <Table
+          results={worstTenCitiesAirQuality}
+          title={"Top 10 most poluted Cities"}
+        />
+        <Table
+          results={bestTenCitiesAirQuality}
+          title={"Top 10 cleanest Cities"}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
