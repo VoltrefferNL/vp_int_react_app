@@ -6,7 +6,7 @@ export const getWorstAirQuality = async (countryCode) => {
     const { data } = await axios.get(
       `${apiUrl}measurements?country=${countryCode}&limit=10&order_by=value&sort=desc`
     );
-    console.log(data, "ASYNC CALL");
+
     return data;
   } catch (error) {
     return error;
@@ -30,7 +30,6 @@ export const getCountrySelectList = async () => {
     const {
       data: { results },
     } = await axios.get(`${apiUrl}countries`);
-    console.log(results, "Countries");
     return results;
   } catch (error) {
     return error;

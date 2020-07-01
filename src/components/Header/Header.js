@@ -3,7 +3,7 @@ import React from "react";
 const Header = () => {
   return (
     <div>
-      <h1>Welcome to the air quality overview</h1>
+      <h1>Air qualitiy Top 10's by countries</h1>
     </div>
   );
 };

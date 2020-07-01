@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as api from "../../api";
 
-const CountryPicker = () => {
+const CountryPicker = ({ processCountryChange, currentCountry }) => {
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
@@ -11,23 +11,35 @@ const CountryPicker = () => {
 
     fetchCountries();
   }, []);
+  const countryNameForTitle = countries.find(
+    ({ code }) => code === currentCountry
+  );
+  if (!countries && !countryNameForTitle) return <div>Loading...</div>;
+  else
+    return (
+      <div>
+        {/* <h1>{countryNameForTitle.name}</h1> */}
 
-  return (
-    <div>
-      <form action="/action_page.php" method="get">
         <label htmlFor="browser">Choose your browser from the list:</label>
         <input list="browsers" name="browser" id="browser" />
         <datalist id="browsers" size="10">
-          {countries.map(({ name, code }, i) => (
-            <option key={i} value={code}>
-              {name}
-            </option>
-          ))}
+          {countries.map(({ name, code }, i) => {
+            return (
+              <option key={i} value={code} id={code}>
+                {name}
+              </option>
+            );
+          })}
         </datalist>
-        <input type="submit" />
-      </form>
-    </div>
-  );
+        <input
+          type="submit"
+          onClick={(e) => {
+            console.log(e);
+            processCountryChange(e.target.value);
+          }}
+        />
+      </div>
+    );
 };
 
 //   return <div>

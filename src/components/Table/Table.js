@@ -6,7 +6,6 @@ const Table = (props) => {
     results: { results },
     title,
   } = props;
-  console.log(results);
   if (!results) return <div>Loading...</div>;
   else
     return (
