@@ -24,3 +24,15 @@ export const getBestAirQuality = async (countryCode) => {
     return error;
   }
 };
+
+export const getCountrySelectList = async () => {
+  try {
+    const {
+      data: { results },
+    } = await axios.get(`${apiUrl}countries`);
+    console.log(results, "Countries");
+    return results;
+  } catch (error) {
+    return error;
+  }
+};

@@ -3,6 +3,7 @@ import React from "react";
 import "./App.css";
 import * as api from "./api";
 import { Header, Table } from "./components";
+import CountryPicker from "./components/CountryPicker/CountryPicker";
 
 class App extends React.Component {
   state = {
@@ -23,6 +24,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header />
+        <CountryPicker />
         <Table
           results={worstTenCitiesAirQuality}
           title={"Top 10 most poluted Cities"}
