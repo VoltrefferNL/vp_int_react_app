@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import * as api from "../../api";
 
-const CountryPicker = ({ processCountryChange, currentCountry }) => {
+const CountryPicker = ({ onCountryChange, currentCountry }) => {
   const [countries, setCountries] = useState([]);
+  const [countryName, setCountryName] = useState()
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -11,19 +12,33 @@ const CountryPicker = ({ processCountryChange, currentCountry }) => {
 
     fetchCountries();
   }, []);
-  const countryNameForTitle = countries.find(
-    ({ code }) => code === currentCountry
-  );
-  if (!countries && !countryNameForTitle) return <div>Loading...</div>;
+
+  useEffect(() => {
+
+    if (countries.length === 0)
+      return;
+
+    const countryName = countries.find(
+      ({ code }) => code === currentCountry)
+
+    if (countryName)
+      setCountryName(countryName.name);
+
+  }, [countries, currentCountry])
+
+
+  if (!countries) return <div>Loading...</div>;
   else
     return (
       <div>
-        {/* <h1>{countryNameForTitle.name}</h1> */}
-
+        <h1>{countryName}</h1>
         <label htmlFor="browser">Choose your browser from the list:</label>
-        <input list="browsers" name="browser" id="browser" />
-        <datalist id="browsers" size="10">
+        <input list="browsers" name="browser" id="browser" onClick={(e) => { e.target.value = '' }} onChange={e => {
+          onCountryChange(e.target.value)
+        }} />
+        <datalist id="browsers" size="10" >
           {countries.map(({ name, code }, i) => {
+            console.log("Country ", name)
             return (
               <option key={i} value={code} id={code}>
                 {name}
@@ -31,13 +46,6 @@ const CountryPicker = ({ processCountryChange, currentCountry }) => {
             );
           })}
         </datalist>
-        <input
-          type="submit"
-          onClick={(e) => {
-            console.log(e);
-            processCountryChange(e.target.value);
-          }}
-        />
       </div>
     );
 };

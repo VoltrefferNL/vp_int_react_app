@@ -11,27 +11,35 @@ class App extends React.Component {
     currentCountry: "GB",
   };
 
-  async componentDidMount() {
-    const worstTenCitiesAirQuality = await api.getWorstAirQuality("GB");
-    const bestTenCitiesAirQuality = await api.getBestAirQuality("GB");
 
-    this.setState({ worstTenCitiesAirQuality, bestTenCitiesAirQuality });
+  componentDidMount() {
+    this.handleCountryCodeChange(this.state.currentCountry)
   }
 
-  processCountryChange = async (countryCode) => {
-    const worstTenCitiesAirQuality = await api.getWorstAirQuality(
-      `${countryCode}`
-    );
-    const bestTenCitiesAirQuality = await api.getBestAirQuality(
-      `${countryCode}`
-    );
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.currentCountry !== prevState.currentCountry)
+      this.handleCountryCodeChange(this.state.currentCountry)
+  }
+
+  handleCountryCodeChange = countryCode => {
+    api.getWorstAirQuality(countryCode).then(response => {
+      this.setState({
+        ...this.state,
+        worstTenCitiesAirQuality: response
+      })
+    });
+    api.getBestAirQuality(countryCode).then(response => {
+      this.setState({
+        ...this.state,
+        bestTenCitiesAirQuality: response
+      })
+    });
 
     this.setState({
-      worstTenCitiesAirQuality,
-      bestTenCitiesAirQuality,
-      currentCountry: countryCode,
-    });
-  };
+      ...this.state,
+      currentCountry: countryCode
+    })
+  }
 
   render() {
     const {
@@ -43,7 +51,7 @@ class App extends React.Component {
       <div className="App">
         <Header />
         <CountryPicker
-          processCountryChange={this.processCountryChange}
+          onCountryChange={countryCode => this.setState({ ...this.state, currentCountry: countryCode })}
           currentCountry={currentCountry}
         />
         <Table
